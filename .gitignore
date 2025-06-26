@@ -1,2 +1,5 @@
 .env
 *.dump
+
+/company/__pycache__/
+/project/__pycache__/
