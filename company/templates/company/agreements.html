@@ -1,0 +1,101 @@
+<!-- myapp/templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Договора</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+   
+</head>
+<body>
+    <header class="d-flex justify-content-center py-3">
+        <ul class="nav nav-pills justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Главная</a></li>
+          <li class="nav-item"><a href="{% url 'agents' %}" class="nav-link">Агенты</a></li>
+          <li class="nav-item"><a href="{% url 'employees' %}" class="nav-link">Сотрудники</a></li>
+          <li class="nav-item"><a href="{% url 'companies' %}" class="nav-link">Компании</a></li>
+          <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Договора</a></li>
+        </ul>
+      </header>
+      <div class="container mt-5">
+        <h1 class="mb-4">Список договоров</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Номер договора</th>
+                    <th>Дата начала соглашения</th>
+                    <th>Дата окончания соглашения</th>
+                    <th>Общая сумма страховых выплат</th>
+                    <th>Агент, заключивший договор</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agreement in agreements %}
+                    <tr>
+                        <td>{{ agreement.agreement_id }}</td>
+                        <td>{{ agreement.agreement_start_date }}</td>
+                        <td>{{ agreement.agreement_end_date }}</td>
+                        <td>{{ agreement.agreement_total_payments }}</td>
+                        <td>{{ agreement.agent.agent_name }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Нет договоров</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-5">
+        <h1 class="mb-4">Список выплат по договорам </h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Номер договора</th>
+                    <th>Категория выплат</th>
+                    <th>Сотрудник</th>
+                    <th>Сумма выплат</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.agreement.agreement_id }}</td>
+                        <td>{{ payment.category.name}}</td>
+                        <td>{{ payment.category.employee.employee_name }}</td>
+                        <td>{{ payment.payment_amount }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">Нет договоров</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-center gap-1 mb-5">
+        <div class="pricing-header p-3 pb-md-4 text-center">
+            <!-- Ссылка для открытия модального окна -->
+        <a href="{% url 'add_agreement' %}"  class="btn btn-lg btn-primary" style="width: 200px;">
+            Добавить договор
+        </a>
+    </div>
+    
+    <div class="pricing-header p-3 pb-md-4 text-center">
+        <!-- Ссылка для открытия модального окна -->
+    <a href="{% url 'add_category_payment' %}"  class="btn btn-lg btn-primary" style="width: 200px;">
+        Добавить выплаты
+    </a>
+</div>
+
+    <div class="pricing-header p-3 pb-md-4 text-center">
+        <!-- Ссылка для открытия модального окна -->
+        <a href="{% url 'add_employee_to_agreement' %}"  class="btn btn-lg btn-primary" style="width: 200px;">
+            Добавить сотрудника в договор
+        </a>
+    </div>
+    </div>
+</body>
+</html>
+
+
